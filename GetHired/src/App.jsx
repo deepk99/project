@@ -10,6 +10,7 @@ import JobPage from "./pages/job";
 import PostJob from "./pages/post-jobs";
 import SavedJobs from "./pages/saved-job";
 import MyJobs from "./pages/my-jobs";
+import LandingPage from "./pages/landing";
 
 function App() {
   const router = createBrowserRouter([
