@@ -32,11 +32,7 @@ function App() {
         },
         {
           path: "/jobs",
-          element: (
-            <ProtectedRoute>
-              <JobListing />
-            </ProtectedRoute>
-          ),
+          element: <JobListing />,
         },
         {
           path: "/job/:id",

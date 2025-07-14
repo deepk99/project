@@ -78,11 +78,12 @@ function LandingPage() {
         </CarouselContent>
       </Carousel>
 
-      {/* <img src="/banner2.jpg" className="w-screen" /> */}
-
-     
-      <div className="overflow-hidden rounded-md mx-auto">
-        <img src="/banner3.jpg" className="w-full h-full object-cover" />
+      <div className="w-full max-w-7xl aspect-[16/6] overflow-hidden rounded-xl mx-auto shadow-lg">
+        <img
+          src="/banner3.jpg"
+          className="w-full h-full object-cover"
+          alt="Banner"
+        />
       </div>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
