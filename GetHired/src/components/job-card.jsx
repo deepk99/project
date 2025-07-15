@@ -35,7 +35,6 @@ function JobCard({
 
   return (
     <Card className="flex flex-col">
-    
       <CardHeader>
         <CardTitle className="flex justify-between font-bold">
           {job.title}
@@ -68,7 +67,7 @@ function JobCard({
             More Details
           </Button>
         </Link>
-       
+        <Heart size={20} stroke="red" fill="red" />
       </CardFooter>
     </Card>
   );
