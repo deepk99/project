@@ -61,3 +61,32 @@ export async function updateHiringStatus(token, { job_id }, isOpen) {
   }
   return data;
 }
+
+
+
+export async function saveJob(token, { alreadySaved }, savedData) {
+  const supabase = await supabaseClient(token);
+
+  if (alreadySaved) {
+    const { data, error: deleteError } = await supabase
+      .from("saved_jobs")
+      .delete()
+      .eq("job_id", savedData.job_id);
+    if (deleteError) {
+      console.log("there is error in deleting saved job");
+      return null;
+    }
+    return data;
+  } else {
+    const { data, error: insertError } = await supabase
+      .from("saved_jobs")
+      .insert([savedData])
+      .select();
+
+    if (insertError) {
+      console.log("there is error in deleting saved job");
+      return null;
+    }
+    return data;
+  }
+}

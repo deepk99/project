@@ -23,13 +23,6 @@ function JobCard({
   const { user } = useUser();
   console.log(job);
 
-  const handleSaveJob = async () => {
-    await fnSavedJob({
-      user_id: user.id,
-      job_id: job.id,
-    });
-    onJobSaved(); 
-  };
 
 
 
