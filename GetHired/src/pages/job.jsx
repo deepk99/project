@@ -1,4 +1,4 @@
-
+import { getSingleJob,updateHiringStatus } from "@/api/apijobs";
 import {
   Select,
   SelectContent,
@@ -52,7 +52,7 @@ function JobPage() {
     }
   }, [isLoaded]);
 
-  console.log(job);
+  
 
   if (!isLoaded) {
     return <BarLoader className="mb-4" width={"100%"} color="blue" />;
