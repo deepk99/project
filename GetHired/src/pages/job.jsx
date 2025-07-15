@@ -16,7 +16,11 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 
-function JobDetaul() {
+
+
+
+
+function JobPage() {
   const { user, isLoaded } = useUser();
 
   const { id } = useParams();
@@ -118,18 +122,9 @@ function JobDetaul() {
 
       
 
-      {job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
-        <div className="flex flex-col  gap-2">
-          <h2 className="text-2xl sm:text-3xl font-bold">Applications</h2>
-          {job?.applications.map((application) => {
-            return (
-              <ApplicationCard key={application.id} application={application} />
-            );
-          })}
-        </div>
-      )}
+      
     </div>
   );
 }
 
-export default JobDetaul;
+export default JobPage;
