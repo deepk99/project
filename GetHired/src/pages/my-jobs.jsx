@@ -1,6 +1,7 @@
 import { GetMyApplications } from "@/api/apiApplications";
+import CreatedJobs from "@/components/created-jobs";
 import CreatedApplications from "@/components/CreatedApplications";
-import CreatedJobs from "@/components/CreatedJobs";
+
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/clerk-react";
 import React from "react";
