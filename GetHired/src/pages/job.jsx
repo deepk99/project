@@ -1,4 +1,6 @@
-import { getSingleJob,updateHiringStatus } from "@/api/apijobs";
+import { getSingleJob, updateHiringStatus } from "@/api/apijobs";
+import ApplicationCard from "@/components/application-card";
+import ApplyJobDrawer from "@/components/apply-job";
 import {
   Select,
   SelectContent,
@@ -9,16 +11,11 @@ import {
 } from "@/components/ui/select";
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/clerk-react";
-import MarkdownEditor from "@uiw/react-markdown-editor";
 import MDEditor from "@uiw/react-md-editor";
 import { BriefcaseIcon, DoorClosed, DoorOpen, MapPinIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
-
-
-
-
 
 function JobPage() {
   const { user, isLoaded } = useUser();
@@ -51,8 +48,6 @@ function JobPage() {
       fnJob();
     }
   }, [isLoaded]);
-
-  
 
   if (!isLoaded) {
     return <BarLoader className="mb-4" width={"100%"} color="blue" />;
@@ -120,9 +115,25 @@ function JobPage() {
         className="bg-transparent sm:text-lg"
       />
 
-      
+      {job?.recruiter_id !== user?.id && (
+        <ApplyJobDrawer
+          job={job}
+          user={user}
+          fetchJob={fnJob}
+          applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
+        />
+      )}
 
-      
+      {job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
+        <div className="flex flex-col  gap-2">
+          <h2 className="text-2xl sm:text-3xl font-bold">Applications</h2>
+          {job?.applications.map((application) => {
+            return (
+              <ApplicationCard key={application.id} application={application} />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

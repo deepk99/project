@@ -80,10 +80,11 @@ function Header() {
           onClick={handleOverLayClick}
         >
           <SignIn
+            
             signUpForceRedirectUrl="/onboarding"
             fallbackRedirectUrl="/onboarding"
           />
-        </div> 
+        </div>
       )}
     </>
   );

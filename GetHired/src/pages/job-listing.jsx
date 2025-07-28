@@ -1,4 +1,3 @@
-
 import { getCompanies } from "@/api/apiComapanies";
 import { getJobs } from "@/api/apijobs";
 import JobCard from "@/components/job-card";
@@ -18,13 +17,6 @@ import { useSession, useUser } from "@clerk/clerk-react";
 import { State } from "country-state-city";
 import React, { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
-
-
-
-
-
-
-
 
 function JobListing() {
   const [searchQuery, setsearchQuery] = useState("");
@@ -61,9 +53,9 @@ function JobListing() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    let formData = new FormData(e.target); 
+    let formData = new FormData(e.target);
 
-    const query = formData.get("search-query"); 
+    const query = formData.get("search-query");
 
     if (query) setsearchQuery(query);
   };
@@ -102,15 +94,13 @@ function JobListing() {
           <SelectTrigger>
             <SelectValue placeholder="Filter by location" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="max-h-60 overflow-y-auto">
             <SelectGroup>
-              {State.getStatesOfCountry("GB").map(({ name }) => {
-                return (
-                  <SelectItem key={name} value={name}>
-                    {name}
-                  </SelectItem>
-                );
-              })}
+              {State.getStatesOfCountry("GB").map(({ name }) => (
+                <SelectItem key={name} value={name}>
+                  {name}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -167,4 +157,5 @@ function JobListing() {
     </div>
   );
 }
+
 export default JobListing;

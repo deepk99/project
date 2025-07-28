@@ -90,3 +90,47 @@ export async function saveJob(token, { alreadySaved }, savedData) {
     return data;
   }
 }
+
+
+export async function GetSavedJobs(token) {
+  const supabase = await supabaseClient(token);
+  let query = supabase
+    .from("saved_jobs")
+    .select("*,job:jobs(*,company:companies(name,logo_url))");
+
+  const { data, error } = await query;
+  if (error) {
+    console.log("there is error in fetching saved jobs", error);
+    return null;
+  }
+  return data;
+}
+
+export async function GetMyCreatedJobs(token, { recruiter_id }) {
+  const supabase = await supabaseClient(token);
+  let query = supabase
+    .from("jobs")
+    .select("*,company:companies(name,logo_url)")
+    .eq("recruiter_id", recruiter_id);
+
+  const { data, error } = await query;
+  if (error) {
+    console.log("there is error in fetching jobs", error);
+    return null;
+  }
+  return data;
+}
+
+
+export async function addNewJob(token, _, jobdata) {
+  const supabase = await supabaseClient(token);
+
+  let query = supabase.from("jobs").insert([jobdata]).select();
+
+  const { data, error } = await query;
+  if (error) {
+    console.log("there is error in creating Job", error);
+    return null;
+  }
+  return data;
+}
