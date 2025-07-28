@@ -134,3 +134,15 @@ export async function addNewJob(token, _, jobdata) {
   }
   return data;
 }
+
+export async function DeleteMyJob(token, { job_id }) {
+  const supabase = await supabaseClient(token);
+  let query = supabase.from("jobs").delete().eq("id", job_id).select();
+
+  const { data, error } = await query;
+  if (error) {
+    console.log("there is error in deleting jobs", error);
+    return null;
+  }
+  return data;
+}
