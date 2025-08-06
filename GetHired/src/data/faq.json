@@ -1,26 +1,35 @@
 [
   {
-    "question": "What is Get-Hired?",
-    "answer": "Hired is a Job Portal Application allows companies to post job listings and users to search and apply for jobs. It provides features for both job seekers and employers, with user-friendly interfaces and secure authentication."
+    "question": "What is the purpose of the GetHired platform?",
+    "answer": "Get-Hired is an online job marketplace designed to connect employers with job seekers. Companies can publish job opportunities, while applicants can browse, search, and apply for jobs that match their skills and interests."
   },
   {
-    "question": "How do I post a job?",
-    "answer": "As an employer, you can post a job by navigating to the 'Post Job' section after logging in. Fill in the job details and submit the form to create a new job listing."
+    "question": "Where can I create a new job listing?",
+    "answer": "If you're an employer, simply log in and head over to the 'Post Job' page. There, you can fill out all the necessary job information and submit your listing to make it live."
+  },
+  
+  {
+    "question": "How can I submit a job application?",
+    "answer": "Click on a job you're interested in and follow the on-screen application steps. Most applications will require you to upload a resume and may ask for additional details such as a skills and education."
   },
   {
-    "question": "How can I search for jobs?",
-    "answer": "Job seekers can search for jobs by keywords, location, category, and other filters using the search bar on the homepage or the dedicated job search page."
+    "question": "Is it possible to bookmark jobs I’m interested in?",
+    "answer": "Absolutely. Each job listing includes a 'Save Job' button. When you click it, the job is added to your saved list, which you can access later from your user profile."
   },
   {
-    "question": "How do I apply for a job?",
-    "answer": "To apply for a job, click on the job listing and follow the application instructions provided. You may need to upload your resume and provide additional information."
+    "question": "Where do I view the progress of my job applications?",
+    "answer": "You can monitor all your job applications from the 'My Applications' tab in your profile. It shows the jobs you’ve applied to and the current status of each application."
   },
   {
-    "question": "Can I save jobs to apply later?",
-    "answer": "Yes, you can save job listings by clicking the 'Save Job' button on the job listing. Saved jobs can be accessed from your profile under the 'Saved Jobs' section."
+    "question": "Do I need an account to apply for jobs?",
+    "answer": "Yes, to apply for jobs or save listings, you’ll need to sign up and log into your Get-Hired account. This helps us personalize your experience and keep track of your activity."
   },
   {
-    "question": "How do I track my job applications?",
-    "answer": "Job seekers can track the status of their applications from the 'Applications' section in their profile. This section provides updates on the progress of each application."
+    "question": "Can I edit or remove a job post after publishing it?",
+    "answer": "Yes, employers can update or delete their job listings at any time from their dashboard. Just go to 'My Jobs' and use the available options next to each listing."
+  },
+  {
+    "question": "Is GetHired free to use?",
+    "answer": "Job seekers can use Get-Hired for free, including applying to jobs and saving listings."
   }
 ]

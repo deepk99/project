@@ -2,6 +2,12 @@ import Header from "@/components/Header";
 import React from "react";
 import { Outlet } from "react-router-dom";
 
+const AppFooter = () => (
+  <footer className="w-full p-8 text-center bg-gray-800 text-gray-300 mt-auto">
+    <p>GetHired UK Ltd © 2025</p>
+  </footer>
+);
+
 function AppLayout() {
   return (
     <div className="px-5">
@@ -10,9 +16,7 @@ function AppLayout() {
         <Header />
         <Outlet />
       </main>
-      <div className="p-10 text-center bg-gray-800 mt-10 ">
-        GetHired UK Ltd © 2025
-      </div>
+      <AppFooter />
     </div>
   );
 }

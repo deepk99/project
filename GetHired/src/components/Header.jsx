@@ -9,35 +9,36 @@ import {
   UserButton,
   useUser,
 } from "@clerk/clerk-react";
-import { BriefcaseBusiness, Heart, PenBox, PenBoxIcon } from "lucide-react";
+import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
 
-function Header() {
-  const [showSignIn, setshowSignIn] = useState(false);
-  const [Search, setSearch] = useSearchParams();
+
+const Header = () => {
+  const [isSignInVisible, setIsSignInVisible] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useUser();
 
   useEffect(() => {
-    if (Search.get("sign-in")) {
-      setshowSignIn(true);
+    if (searchParams.get("sign-in")) {
+      setIsSignInVisible(true);
     }
-  }, [Search]);
+  }, [searchParams]);
 
-  const handleOverLayClick = (e) => {
-    if (e.target === e.currentTarget) {
-      setshowSignIn(false);
-      setSearch({});
+  const handleBackdropClick = (event) => {
+    if (event.target === event.currentTarget) {
+      setIsSignInVisible(false);
+      setSearchParams({});
     }
   };
   return (
     <>
-      <nav className="py-4 flex justify-between items-center">
-        <Link>
+      <header className="py-4 flex justify-between items-center">
+        <Link to="/">
           <img src="/Hired.png" alt="" className="h-22 w-24" />
         </Link>
 
-        <div className="flex gap-8">
+        <div className="flex items-center gap-8">
           <SignedOut>
-            <Button varient="outline" onClick={() => setshowSignIn(true)}>
+            <Button varient="outline" onClick={() => setIsSignInVisible(true)}>
               Login
             </Button>
           </SignedOut>
@@ -72,15 +73,14 @@ function Header() {
             </UserButton>
           </SignedIn>
         </div>
-      </nav>
+      </header>
 
-      {showSignIn && (
+      {isSignInVisible && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-55"
-          onClick={handleOverLayClick}
+          onClick={handleBackdropClick}
         >
           <SignIn
-            
             signUpForceRedirectUrl="/onboarding"
             fallbackRedirectUrl="/onboarding"
           />

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -8,18 +7,6 @@ import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { Link } from "react-router-dom";
 import companies from "../data/companies.json";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-
-
-
 import faq from "../data/faq.json";
 import {
   Accordion,
@@ -44,19 +31,20 @@ function LandingPage() {
           </span>
         </h1>
         <p className="text-gray-300 sm:mt-4 text-xs sm:text-xl">
-          Explore thousands of job listings or find the perfect candidate
+          Explore thousands of job listings from top companies or find the
+          perfect candidate for your team.
         </p>
       </section>
-      <div className="flex gap-6 justify-center">
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Link to="/jobs">
-          <Button variant="blue" size="xl">
+          <button className="w-full sm:w-auto px-8 py-4 text-lg font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all shadow-lg">
             Find Jobs
-          </Button>
+          </button>
         </Link>
         <Link to="/post-job">
-          <Button variant="destructive" size="xl">
+          <button className="w-full sm:w-auto px-8 py-4 text-lg font-bold text-white bg-red-600 rounded-lg hover:bg-red-700 transition-all shadow-lg">
             Post a Job
-          </Button>
+          </button>
         </Link>
       </div>
 
@@ -89,23 +77,25 @@ function LandingPage() {
         />
       </div>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-bold">For Job Seekers</CardTitle>
-          </CardHeader>
-          <CardContent>
-            Search and apply for jobs, track applications, and more.
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-bold">For Employers</CardTitle>
-          </CardHeader>
-          <CardContent>
-            Post jobs, manage applications, and find the best candidates.
-          </CardContent>
-        </Card>
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-xl shadow-md">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            For Job Seekers
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            Search and apply for jobs, track applications, and get discovered by
+            top employers.
+          </p>
+        </div>
+        <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-xl shadow-md">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            For Employers
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            Post jobs, manage applications, and find the best candidates for
+            your open roles.
+          </p>
+        </div>
       </section>
 
       <Accordion type="single" collapsible>
