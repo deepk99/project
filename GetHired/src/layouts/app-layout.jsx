@@ -1,3 +1,4 @@
+import AuthRedirect from "@/components/AuthRedirect";
 import Header from "@/components/Header";
 import React from "react";
 import { Outlet } from "react-router-dom";
@@ -14,6 +15,7 @@ function AppLayout() {
       <div className="grid-background"></div>
       <main className="min-h-screen container m-auto">
         <Header />
+        <AuthRedirect/>
         <Outlet />
       </main>
       <AppFooter />
