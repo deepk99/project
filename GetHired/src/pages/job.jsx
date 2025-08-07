@@ -1,4 +1,4 @@
-import { getSingleJob, updateHiringStatus } from "@/api/apijobs";
+import { fetchJobDetails, updateHiringStatus } from "@/api/apijobs";
 import ApplicationCard from "@/components/application-card";
 import ApplyJobDrawer from "@/components/apply-job";
 import {
@@ -26,7 +26,7 @@ function JobPage() {
     loading: loadingJob,
     data: job,
     fn: fnJob,
-  } = useFetch(getSingleJob, {
+  } = useFetch(fetchJobDetails, {
     job_id: id,
   });
 

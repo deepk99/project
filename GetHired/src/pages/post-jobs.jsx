@@ -1,5 +1,5 @@
 import { addNewJob } from "@/api/apijobs";
-import { getCompanies } from "@/api/apiComapanies";
+import { fetchCompanies } from "@/api/apiComapanies";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -52,7 +52,7 @@ function PostingJob() {
     fn: fnCompanies,
     data: companies,
     loading: loadingCompanies,
-  } = useFetch(getCompanies);
+  } = useFetch(fetchCompanies);
 
   useEffect(() => {
     if (isLoaded) {

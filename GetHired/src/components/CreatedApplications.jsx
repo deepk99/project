@@ -1,4 +1,4 @@
-import { GetMyApplications } from "@/api/apiApplications";
+import { fetchUserApplications } from "@/api/apiApplications";
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect } from "react";
@@ -12,7 +12,7 @@ function CreatedApplications() {
     loading: loadingApplications,
     data: applications,
     fn: fnApplications,
-  } = useFetch(GetMyApplications, { user_id: user.id });
+  } = useFetch(fetchUserApplications, { user_id: user.id });
 
   useEffect(() => {
     fnApplications();

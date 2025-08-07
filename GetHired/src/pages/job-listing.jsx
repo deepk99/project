@@ -1,5 +1,5 @@
-import { getCompanies } from "@/api/apiComapanies";
-import { getJobs } from "@/api/apijobs";
+import { fetchCompanies } from "@/api/apiComapanies";
+import {fetchJobListings} from "@/api/apijobs";
 import JobCard from "@/components/job-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,13 +27,13 @@ function JobListing() {
     fn: fnJobs,
     data: Jobs,
     loading: loadingJobs,
-  } = useFetch(getJobs, {
+  } = useFetch(fetchJobListings, {
     location,
     company_id,
     searchQuery,
   });
 
-  const { fn: fnCompanies, data: companies } = useFetch(getCompanies);
+  const { fn: fnCompanies, data: companies } = useFetch(fetchCompanies);
 
   useEffect(() => {
     if (isLoaded) {

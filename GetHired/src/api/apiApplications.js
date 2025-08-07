@@ -1,78 +1,69 @@
 import supabaseClient, { supabaseUrl } from "@/utils/supabase";
 
-export async function applyToJob(token, _, jobData) {
-  const supabase = await supabaseClient(token);
+export async function submitJobApplication(authToken, _, applicationInfo) {
+  const client = await supabaseClient(authToken);
 
-  const random = Math.floor(Math.random() * 90000); 
-  console.log(random);
+  const uniqueNumber = Math.floor(Math.random() * 80000);
+  const resumeFile = `resume-${uniqueNumber}-${applicationInfo.candidate_id}`;
 
-  const fileName = `resume-${random}-${jobData.candidate_id}`;
-  console.log(fileName);
-
-  console.log(jobData);
-  console.log("Job Data Before Upload:", jobData);
-  console.log("Resume File:", jobData.resume);
-  console.log("Resume File Type:", jobData.resume?.type);
-
-  const { error: storageError } = await supabase.storage
+  const { error: uploadError } = await client.storage
     .from("resumes")
-    .upload(fileName, jobData.resume);
+    .upload(resumeFile, applicationInfo.resume);
 
-  if (storageError) {
-    console.error("Error in uploading resume", storageError);
+  if (uploadError) {
+    console.error("Resume upload failed:", uploadError);
     return null;
   }
 
-  const resume = `${supabaseUrl}/storage/v1/object/public/resumes/${fileName}`;
+  const resumeUrl = `${supabaseUrl}/storage/v1/object/public/resumes/${resumeFile}`;
 
-  console.log(resume);
-
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("applications")
-    .insert([{ ...jobData, resume }])
+    .insert([{ ...applicationInfo, resume: resumeUrl }])
     .select();
 
   if (error) {
-    console.error("Error in submitting resume", error);
+    console.error("Failed to submit job application:", error);
     return null;
   }
+
   return data;
 }
 
+export async function updateApplicationStatus(authToken, { job_id }, newStatus) {
+  const client = await supabaseClient(authToken);
 
-export async function updateApplicationStatus(token, { job_id }, status) {
-  const supabase = await supabaseClient(token);
-
-  let query = supabase
+  const query = await client
     .from("applications")
-    .update({ status })
+    .update({ status: newStatus })
     .eq("job_id", job_id)
     .select();
-  console.log(status);
 
-  const { data, error } = await query;
-  if (error || data.length === 0) {
-    console.log("there is error in updateing apllication status", error);
+  if (query.error || !query.data || query.data.length === 0) {
+    console.error("Could not update application status:", query.error);
     return null;
   }
-  return data;
+
+  return query.data;
 }
 
 
-export async function GetMyApplications(token, { user_id }) {
-  const supabase = await supabaseClient(token);
-  let query = supabase
+export async function fetchUserApplications(authToken, { user_id }) {
+  const client = await supabaseClient(authToken);
+
+  const query = await client
     .from("applications")
-    .select("*,job:jobs(title,company:companies(name))")
+    .select("*, job:jobs(title, company:companies(name))")
     .eq("candidate_id", user_id);
 
-  const { data, error } = await query;
-  if (error) {
-    console.log("there is error in fetching applications", error);
+  if (query.error) {
+    console.error("Error while retrieving user applications:", query.error);
     return null;
   }
-  return data;
+
+  return query.data;
 }
+
 
 
 

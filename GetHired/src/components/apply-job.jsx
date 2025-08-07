@@ -16,7 +16,7 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Label } from "./ui/label";
 import { Controller, useForm } from "react-hook-form";
 import useFetch from "@/hooks/use-fetch";
-import { applyToJob } from "@/api/apiApplications";
+import { submitJobApplication } from "@/api/apiApplications";
 import { BarLoader } from "react-spinners";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -55,7 +55,7 @@ function ApplyJobDrawer({ user, job, fetchJob, applied = false }) {
     loading: loadingApply,
     error: errorApply,
     fn: fnApply,
-  } = useFetch(applyToJob);
+  } = useFetch(submitJobApplication);
 
   const onSubmit = (data) => {
     console.log(data);
