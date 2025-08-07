@@ -1,7 +1,8 @@
 import { fetchCompanies } from "@/api/apiComapanies";
-import {fetchJobListings} from "@/api/apijobs";
+import { fetchJobListings } from "@/api/apijobs";
 import JobCard from "@/components/job-card";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -15,6 +16,7 @@ import {
 import useFetch from "@/hooks/use-fetch";
 import { useSession, useUser } from "@clerk/clerk-react";
 import { State } from "country-state-city";
+import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
 
@@ -23,6 +25,7 @@ function JobListing() {
   const [location, setlocation] = useState("");
   const [company_id, setcompany_id] = useState("");
   const { isLoaded } = useUser();
+
   const {
     fn: fnJobs,
     data: Jobs,
@@ -30,32 +33,40 @@ function JobListing() {
   } = useFetch(fetchJobListings, {
     location,
     company_id,
-    searchQuery,
+    
   });
 
   const { fn: fnCompanies, data: companies } = useFetch(fetchCompanies);
 
+
+
+
+  const filteredJobs = searchQuery
+    ? Jobs?.filter((job) =>
+        job.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : Jobs;
+
   useEffect(() => {
     if (isLoaded) {
       fnCompanies();
+      fnJobs();
     }
   }, [isLoaded]);
-
-  console.log(companies);
-  console.log("Hello");
 
   useEffect(() => {
     if (isLoaded) {
       fnJobs();
     }
   }, [isLoaded, location, company_id, searchQuery]);
+
   console.log(Jobs);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    let formData = new FormData(e.target);
+    let formData = new FormData(e.target); 
 
-    const query = formData.get("search-query");
+    const query = formData.get("search-query"); 
 
     if (query) setsearchQuery(query);
   };
@@ -84,11 +95,14 @@ function JobListing() {
           placeholder="Search Jobs by Title..."
           name="search-query"
           className="h-full flex-1 px-4 text-md"
+          value={searchQuery}
+          onChange={(e) => setsearchQuery(e.target.value)}
         ></Input>
         <Button type="submit" className="h-full sm:w-28" variant="blue">
           Search
         </Button>
       </form>
+
       <div className="flex flex-col sm:flex-row gap-2">
         <Select value={location} onValueChange={(value) => setlocation(value)}>
           <SelectTrigger>
@@ -139,8 +153,8 @@ function JobListing() {
 
       {loadingJobs === false && (
         <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Jobs?.length ? (
-            Jobs.map((job) => {
+          {filteredJobs?.length ? (
+            filteredJobs.map((job) => {
               return (
                 <JobCard
                   key={job.id}
