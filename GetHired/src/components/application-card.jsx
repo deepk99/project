@@ -2,13 +2,11 @@ import React from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
 import { Boxes, BriefcaseBusiness, Download, School } from "lucide-react";
-import { space } from "postcss/lib/list";
 import { updateApplicationStatus } from "@/api/apiApplications";
 import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
@@ -20,12 +18,12 @@ import {
   SelectValue,
 } from "./ui/select";
 
-function ApplicationCard({ application, isCandidate = false }) {
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = application?.resume;
-    link.target = "_blank";
-    link.click();
+function ApplicationCard({ application, isApplicant = false }) {
+  const downloadResume = () => {
+    const resumelink = document.createElement("a");
+    resumelink.href = application?.resume;
+    resumelink.target = "_blank";
+    resumelink.click();
   };
 
   const { loading: loadingHiringStatus, fn: fnHiringStatus } = useFetch(
@@ -35,54 +33,58 @@ function ApplicationCard({ application, isCandidate = false }) {
     }
   );
 
-  const handleStatusChange = (status) => {
-    fnHiringStatus(status);
+  console.log("Application Data:", application);
+
+  const onStatusChange = (value) => {
+    fnHiringStatus(value);
   };
 
   return (
-    <Card>
+    <Card className="flex flex-col shadow-md transition-all">
       {loadingHiringStatus && (
         <BarLoader className="mb-4" width={"100%"} color="blue" />
       )}
-      <CardHeader>
-        <CardTitle className="flex justify-between items-center font-bold">
-          {isCandidate
+      <CardHeader className="pb-3">
+        <CardTitle className="flex justify-between items-center text-lg font-semibold">
+          {isApplicant
             ? `${application?.job?.title} at ${application?.job?.company?.name}`
             : application?.name}
 
           <Download
-            size={18}
-            className="bg-white text-black rounded-full h-8 w-8 p-1.5 cursor-pointer"
-            onClick={handleDownload}
+            size={20}
+            className="cursor-pointer bg-white text-black rounded-full p-1.5 h-8 w-8 hover:shadow"
+            onClick={downloadResume}
           />
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4 flex-1">
-        <div className="flex flex-col md:flex-row justify-between ">
-          <div className="flex gap-2 items-center">
+      <CardContent className="flex flex-col gap-3">
+        <div className="flex flex-col sm:flex-row flex-wrap justify-between gap- ">
+          <div className="flex items-center gap-2 text-sm text-gray-300">
             <BriefcaseBusiness />
-            {application?.experience} years of experience
+            <span>{application?.experience} yrs experience</span>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-2 text-sm text-gray-300">
             <School />
             {application?.education}
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-2 text-sm text-gray-300">
             <Boxes />
             Skills: {application?.skills}
           </div>
         </div>
-        <hr />
+        <hr className="border-gray-300" />
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <span>{new Date(application?.created_at).toLocaleString()}</span>
-        {isCandidate ? (
-          <span className="capitalize font-bold">
+      <CardFooter className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm">
+        <span className="text-gray-300">
+          Applied on: {new Date(application?.created_at).toLocaleString()}
+        </span>
+        {isApplicant ? (
+          <span className="font-semibold capitalize">
             Status: {application?.status}
           </span>
         ) : (
           <Select
-            onValueChange={handleStatusChange}
+            onValueChange={onStatusChange}
             defaultValue={application.status}
           >
             <SelectTrigger className="w-52">

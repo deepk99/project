@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Heart, MapPinIcon, Trash2Icon } from "lucide-react";
+import { Bookmark, MapPinIcon, Trash2Icon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import useFetch from "@/hooks/use-fetch";
@@ -20,13 +20,13 @@ function JobCard({
   savedInit = false,
   onJobSaved = () => {},
 }) {
-  const [saved, setsaved] = useState(savedInit);
+  const [isSaved, setIsSaved] = useState(savedInit);
   const {
     fn: fnSavedJob,
     data: savedJob,
     loading: loadingSavedJobs,
   } = useFetch(saveJob, {
-    alreadySaved: saved,
+    alreadySaved: isSaved,
   });
   const { user } = useUser();
   console.log(job);
@@ -40,9 +40,8 @@ function JobCard({
   };
 
   useEffect(() => {
-    if (savedJob !== undefined) setsaved(savedJob?.length > 0);
+    if (savedJob !== undefined) setIsSaved(savedJob?.length > 0);
   }, [savedJob]);
-
 
   const { loading: loadingDeleteJob, fn: fnDeleteJob } = useFetch(DeleteMyJob, {
     job_id: job.id,
@@ -53,56 +52,55 @@ function JobCard({
     onJobSaved();
   };
 
-
-
   return (
-    <Card className="flex flex-col">
+    <Card className="shadow-md hover:shadow-lg transition-all flex flex-col">
       {loadingDeleteJob && (
         <BarLoader className="mb-4" width={"100%"} color="blue" />
       )}
-      <CardHeader>
-        <CardTitle className="flex justify-between font-bold">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex justify-between items-center text-lg font-semibol">
           {job.title}
           {isMyJob && (
             <Trash2Icon
-              fill="red"
               size={18}
-              className="text-red-300 cursor-pointer"
+              className="text-red-500 cursor-pointer hover:text-red-700"
               onClick={handleDeleteJOb}
             />
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4 flex-1">
-        <div className="flex justify-between">
+      <CardContent className="flex flex-col gap-3 flex-grow">
+        <div className="flex justify-between items-center">
           {job.company && (
-            <img src={job.company.logo_url} className="h-6" alt="" />
+            <img src={job.company.logo_url} className="h-6 w-auto" alt="" />
           )}
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center text-sm gap-1 text-gray-300">
             <MapPinIcon size={15} />
             {job.location}
           </div>
         </div>
-        <hr />
-        {job.description.substring(0, job.description.indexOf("."))}.
+
+        <div className="border-t pt-2 text-sm text-gray-300">
+          {job.description?.split(".")[0]}.
+        </div>
       </CardContent>
-      <CardFooter className="flex gap-2">
+      <CardFooter className="mt-auto flex justify-between items-center gap-2">
         <Link to={`/job/${job.id}`} className="flex-1">
-          <Button variant="secondary" className="w-full">
-            More Details
+          <Button className="w-full" variant="secondary">
+            View Job
           </Button>
         </Link>
         {!isMyJob && (
           <Button
             variant="outline"
             onClick={handleSaveJob}
-            className="w-15"
+            className="p-2"
             disabled={loadingSavedJobs}
           >
-            {saved ? (
-              <Heart size={20} stroke="red" fill="red" />
+            {isSaved ? (
+              <Bookmark size={20} stroke="red" fill="red" />
             ) : (
-              <Heart size={20} />
+              <Bookmark size={20} />
             )}
           </Button>
         )}

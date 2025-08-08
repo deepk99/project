@@ -11,11 +11,11 @@ function CreatedApplications() {
   const {
     loading: loadingApplications,
     data: applications,
-    fn: fnApplications,
+    fn: userApplications,
   } = useFetch(fetchUserApplications, { user_id: user.id });
 
   useEffect(() => {
-    fnApplications();
+    userApplications();
   }, []);
 
   if (loadingApplications) {
@@ -29,7 +29,8 @@ function CreatedApplications() {
           <ApplicationCard
             key={application.id}
             application={application}
-            isCandidate
+            isApplicant
+            
           />
         );
       })}

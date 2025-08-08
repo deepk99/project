@@ -25,7 +25,7 @@ function JobPage() {
   const {
     loading: loadingJob,
     data: job,
-    fn: fnJob,
+    fn: loadJobDetails,
   } = useFetch(fetchJobDetails, {
     job_id: id,
   });
@@ -33,19 +33,20 @@ function JobPage() {
   const {
     loading: loadingHiringStatus,
 
-    fn: fnHiringStatus,
+    fn: changeHiringStatus,
   } = useFetch(updateHiringStatus, {
     job_id: id,
   });
 
   const handleStatusChange = (value) => {
     const isOpen = value === "open";
-    fnHiringStatus(isOpen).then(() => fnJob());
+    changeHiringStatus(isOpen);
+    loadJobDetails();
   };
 
   useEffect(() => {
     if (isLoaded) {
-      fnJob();
+      loadJobDetails();
     }
   }, [isLoaded]);
 
@@ -119,7 +120,7 @@ function JobPage() {
         <ApplyJobDrawer
           job={job}
           user={user}
-          fetchJob={fnJob}
+          fetchJob={loadJobDetails}
           applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
         />
       )}

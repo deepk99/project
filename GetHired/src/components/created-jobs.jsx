@@ -5,44 +5,43 @@ import React, { useEffect } from "react";
 import { BarLoader } from "react-spinners";
 import JobCard from "./job-card";
 
-
 function CreatedJobs() {
   const { user, isLoaded } = useUser();
   const {
-    loading: loadingCreatedJobs,
-    data: createdJobs,
-    fn: fnCreatedJobs,
+    loading: isJobsLoading,
+    data: jobsPosted,
+    fn: fetchJobs,
   } = useFetch(GetMyCreatedJobs, {
-    recruiter_id: user.id,
+    recruiter_id: user?.id,
   });
   console.log(user);
 
   useEffect(() => {
-    fnCreatedJobs();
+    fetchJobs();
   }, []);
 
-  if (loadingCreatedJobs) {
+  if (isJobsLoading) {
     return <BarLoader className="mb-4" width={"100%"} color="blue" />;
   }
   return (
-    <div>
-      <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {createdJobs?.length ? (
-          createdJobs.map((job) => {
-            return (
-              <JobCard
-                key={job.id}
-                job={job}
-                onJobSaved={fnCreatedJobs}
-                isMyJob
-              />
-            );
-          })
-        ) : (
-          <div>No jobs Found</div>
-        )}
-      </div>
-    </div>
+    <section className="py-10 px-4">
+      {jobsPosted?.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {jobsPosted.map((job) => (
+            <JobCard
+              key={job.id}
+              job={job}
+              onJobSaved={fetchJobs}
+              isMyJob
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-600 font-semibold mt-10">
+          No job postings available.
+        </div>
+      )}
+    </section>
   );
 }
 

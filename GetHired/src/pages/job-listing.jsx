@@ -2,44 +2,46 @@ import { fetchCompanies } from "@/api/apiComapanies";
 import { fetchJobListings } from "@/api/apijobs";
 import JobCard from "@/components/job-card";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import useFetch from "@/hooks/use-fetch";
-import { useSession, useUser } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import { State } from "country-state-city";
-import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
 
 function JobListing() {
+  const { isLoaded } = useUser();
   const [searchQuery, setsearchQuery] = useState("");
   const [location, setlocation] = useState("");
   const [company_id, setcompany_id] = useState("");
-  const { isLoaded } = useUser();
 
   const {
-    fn: fnJobs,
+    fn: loadJobs,
     data: Jobs,
-    loading: loadingJobs,
+    loading: jobLoading,
   } = useFetch(fetchJobListings, {
     location,
     company_id,
-    
   });
 
-  const { fn: fnCompanies, data: companies } = useFetch(fetchCompanies);
+  const { fn: loadComanies, data: companies } = useFetch(fetchCompanies);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    let formData = new FormData(e.target);
 
+    const query = formData.get("search-query");
 
+    if (query) setsearchQuery(query);
+  };
 
   const filteredJobs = searchQuery
     ? Jobs?.filter((job) =>
@@ -49,29 +51,20 @@ function JobListing() {
 
   useEffect(() => {
     if (isLoaded) {
-      fnCompanies();
-      fnJobs();
+      loadComanies();
+      loadJobs();
     }
   }, [isLoaded]);
 
   useEffect(() => {
     if (isLoaded) {
-      fnJobs();
+      loadJobs();
     }
   }, [isLoaded, location, company_id, searchQuery]);
 
   console.log(Jobs);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    let formData = new FormData(e.target); 
-
-    const query = formData.get("search-query"); 
-
-    if (query) setsearchQuery(query);
-  };
-
-  const handleClearButton = () => {
+  const handleReset = () => {
     setsearchQuery("");
     setcompany_id("");
     setlocation("");
@@ -83,7 +76,7 @@ function JobListing() {
   return (
     <div>
       <h1 className="gradient-title font-extrabold text-6xl sm:text-7xl text-center pb-8 ">
-        Latest Jobs
+        Discover New Job Opportunities
       </h1>
 
       <form
@@ -92,8 +85,8 @@ function JobListing() {
       >
         <Input
           type="text"
-          placeholder="Search Jobs by Title..."
-          name="search-query"
+          placeholder="Type a job title to search..."
+          name="job-search"
           className="h-full flex-1 px-4 text-md"
           value={searchQuery}
           onChange={(e) => setsearchQuery(e.target.value)}
@@ -141,17 +134,15 @@ function JobListing() {
         <Button
           variant="destructive"
           className="sm:w-1/2"
-          onClick={handleClearButton}
+          onClick={handleReset}
         >
           Clear Filters
         </Button>
       </div>
 
-      {loadingJobs && (
-        <BarLoader className="mb-4" width={"100%"} color="blue" />
-      )}
+      {jobLoading && <BarLoader className="mb-4" width={"100%"} color="blue" />}
 
-      {loadingJobs === false && (
+      {jobLoading === false && (
         <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredJobs?.length ? (
             filteredJobs.map((job) => {
@@ -164,7 +155,7 @@ function JobListing() {
               );
             })
           ) : (
-            <div>No jobs Found</div>
+            <div>No matching jobs available</div>
           )}
         </div>
       )}
