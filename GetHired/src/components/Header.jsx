@@ -5,48 +5,49 @@ import {
   SignedIn,
   SignedOut,
   SignIn,
-  SignInButton,
   UserButton,
   useUser,
 } from "@clerk/clerk-react";
 import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
 
-
 const Header = () => {
-  const [isSignInVisible, setIsSignInVisible] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const [queryParams, setQueryParams] = useSearchParams();
   const { user } = useUser();
 
   useEffect(() => {
-    if (searchParams.get("sign-in")) {
-      setIsSignInVisible(true);
+    if (queryParams.get("sign-in")) {
+      setShowSignInModal(true);
     }
-  }, [searchParams]);
+  }, [queryParams]);
 
   const handleBackdropClick = (event) => {
     if (event.target === event.currentTarget) {
-      setIsSignInVisible(false);
-      setSearchParams({});
+      setShowSignInModal(false);
+      setQueryParams({});
     }
   };
   return (
     <>
       <header className="py-4 flex justify-between items-center">
-        <Link to="/">
-          <img src="/Hired.png" alt="" className="h-22 w-24" />
+        <Link to="/" className="flex items-center gap-2">
+          <img src="/Hired.png" alt="" className="h-10 w-auto" />
         </Link>
 
         <div className="flex items-center gap-8">
           <SignedOut>
-            <Button varient="outline" onClick={() => setIsSignInVisible(true)}>
-              Login
+            <Button varient="outline" onClick={() => setShowSignInModal(true)}>
+              Sign In
             </Button>
           </SignedOut>
           <SignedIn>
             {user?.unsafeMetadata?.role === "recruiter" && (
               <Link to="/post-job">
-                <Button variant="destructive" className="rounded-full">
-                  <PenBox size={20} className="mr-2" />
+                <Button
+                  variant="secondary"
+                  className="flex items-center gap-2 rounded-md"
+                >
+                  <PenBox size={18} />
                   Post a Job
                 </Button>
               </Link>
@@ -75,9 +76,9 @@ const Header = () => {
         </div>
       </header>
 
-      {isSignInVisible && (
+      {showSignInModal && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-55"
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60"
           onClick={handleBackdropClick}
         >
           <SignIn
@@ -88,6 +89,6 @@ const Header = () => {
       )}
     </>
   );
-}
+};
 
 export default Header;

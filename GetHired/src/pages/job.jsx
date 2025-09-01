@@ -113,7 +113,7 @@ function JobPage() {
       </h2>
       <MDEditor.Markdown
         source={job?.requirements}
-        className="bg-transparent sm:text-lg"
+        className="bg-transparent text-gray-200 sm:text-lg"
       />
 
       {job?.recruiter_id !== user?.id && (
@@ -140,3 +140,30 @@ function JobPage() {
 }
 
 export default JobPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
